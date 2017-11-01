@@ -1,0 +1,193 @@
+[
+    {
+        "id": "1d52bd17.cdd4b3",
+        "type": "tab",
+        "label": "Feinstaub",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "6ab58a04.988424",
+        "type": "ttn device",
+        "z": "1d52bd17.cdd4b3",
+        "name": "Feinstaub activations",
+        "app": "a7fd4557.171168",
+        "dev_id": "",
+        "event": "activations",
+        "x": 200,
+        "y": 140,
+        "wires": [
+            [
+                "5705c4a0.c6761c"
+            ]
+        ]
+    },
+    {
+        "id": "4897259a.4b597c",
+        "type": "ttn device",
+        "z": "1d52bd17.cdd4b3",
+        "name": "Feinstaub up",
+        "app": "a7fd4557.171168",
+        "dev_id": "",
+        "event": "up",
+        "x": 170,
+        "y": 200,
+        "wires": [
+            [
+                "5705c4a0.c6761c"
+            ]
+        ]
+    },
+    {
+        "id": "5705c4a0.c6761c",
+        "type": "debug",
+        "z": "1d52bd17.cdd4b3",
+        "name": "debug",
+        "active": false,
+        "console": "false",
+        "complete": "true",
+        "x": 430,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "2ea307fd.48d828",
+        "type": "ttn message",
+        "z": "1d52bd17.cdd4b3",
+        "name": "Feinstaub message",
+        "app": "a7fd4557.171168",
+        "dev_id": "",
+        "field": "",
+        "x": 190,
+        "y": 260,
+        "wires": [
+            [
+                "2097ef7.2bdcd1",
+                "b314d494.0f3818"
+            ]
+        ]
+    },
+    {
+        "id": "2097ef7.2bdcd1",
+        "type": "debug",
+        "z": "1d52bd17.cdd4b3",
+        "name": "debug",
+        "active": false,
+        "console": "false",
+        "complete": "true",
+        "x": 430,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "b314d494.0f3818",
+        "type": "function",
+        "z": "1d52bd17.cdd4b3",
+        "name": "get payload objects",
+        "func": "var id = msg.hardware_serial;\nvar pm10 = msg.payload.PM10;\nvar pm25 = msg.payload.PM25;\n\nmsg = {};\n\nmsg.headers = {\n    'X-Pin': '1', \n    'X-Sensor': 'bs-' + id\n}\nmsg.payload = {\n    'software_version': 'TTN-Basel-v1',\n    'sensordatavalues': [\n        {'value_type': 'P1', 'value': pm10},\n        {'value_type': 'P2', 'value': pm25}\n    ]\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 490,
+        "y": 340,
+        "wires": [
+            [
+                "1e4a8cb2.de4f03",
+                "88d39b8e.8d5608"
+            ]
+        ]
+    },
+    {
+        "id": "1e4a8cb2.de4f03",
+        "type": "debug",
+        "z": "1d52bd17.cdd4b3",
+        "name": "debug",
+        "active": false,
+        "console": "false",
+        "complete": "true",
+        "x": 730,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "88d39b8e.8d5608",
+        "type": "http request",
+        "z": "1d52bd17.cdd4b3",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "url": "http://api.luftdaten.info/v1/push-sensor-data/",
+        "tls": "",
+        "x": 710,
+        "y": 400,
+        "wires": [
+            [
+                "5283982b.1451e8"
+            ]
+        ]
+    },
+    {
+        "id": "6dcb51c6.a74c4",
+        "type": "comment",
+        "z": "1d52bd17.cdd4b3",
+        "name": "Feinstaub API",
+        "info": "http://api.luftdaten.info/v1/push-sensor-data/\n\n# ***************************\n# Feinstaub sensor (SDS011)\n# ***************************\n# X-Pin: 1 für SDS011, 3 für BMP180, 5 für PPD42NS, 7 für DHT22 und 11 für BME280.\nheaders = {\n    'X-Pin': '1',  # SDS011 == 1\n    'X-Sensor': self.id_prefix + str(device_eui)\n}\npostdata = {\n    'software_version': 'TTNUlm-v1',\n    'sensordatavalues': [\n        {'value_type': 'P1', 'value': str(payload_fields['pm10'])},  # PM10\n        {'value_type': 'P2', 'value': str(payload_fields['pm25'])}   # PM2.5\n    ]\n}\n\n# ***************************\n# Temp/Hum (DHT)\n# ***************************\nheaders = {\n    'X-Pin': '7',  # DHT22 == 7\n    'X-Sensor': self.id_prefix + str(device_eui)\n}\npostdata = {\n    'software_version': 'TTNUlm-v1',\n    'sensordatavalues': [\n        {'value_type': 'temperature', 'value': str(payload_fields['temperature'])},\n        {'value_type': 'humidity', 'value': str(payload_fields['humidity'])},\n    ]\n}",
+        "x": 190,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "5283982b.1451e8",
+        "type": "debug",
+        "z": "1d52bd17.cdd4b3",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "true",
+        "x": 870,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "4f9bd03f.1797d",
+        "type": "inject",
+        "z": "1d52bd17.cdd4b3",
+        "name": "Test REST API",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 300,
+        "y": 400,
+        "wires": [
+            [
+                "94b59b1a.446e68"
+            ]
+        ]
+    },
+    {
+        "id": "94b59b1a.446e68",
+        "type": "function",
+        "z": "1d52bd17.cdd4b3",
+        "name": "sample payload",
+        "func": "msg.payload = {\n   \"software_version\": \"TTN-Basel-v1\",\n   \"sensordatavalues\": [\n       {\"value_type\": \"P1\", \"value\": 20},\n       {\"value_type\": \"P2\", \"value\": 22}\n   ]\n};\nmsg.headers = {};\nmsg.headers['X-Pin'] = '1';\nmsg.headers['X-Sensor'] = 'bs-your-device-eui';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 500,
+        "y": 400,
+        "wires": [
+            [
+                "88d39b8e.8d5608"
+            ]
+        ]
+    },
+    {
+        "id": "a7fd4557.171168",
+        "type": "ttn app",
+        "z": "",
+        "appId": "your-app-id",
+        "region": "eu",
+        "accessKey": "ttn-account-v2.your-access-key"
+    }
+]
