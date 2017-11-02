@@ -1,0 +1,3 @@
+[submodule "Feinstaub_LoRa_SDS011_DHT22"]
+	path = Feinstaub_LoRa_SDS011_DHT22
+	url = https://github.com/urs8000/Feinstaub_LoRa_SDS011_DHT22
