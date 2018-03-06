@@ -1,6 +1,6 @@
-[submodule "Feinstaub_LoRa_SDS011_DHT22"]
-	path = Feinstaub_LoRa_SDS011_DHT22
-	url = https://github.com/urs8000/Feinstaub_LoRa_SDS011_DHT22
 [submodule "sensors-software"]
 	path = sensors-software
 	url = https://github.com/opendata-stuttgart/sensors-software
+[submodule "particulate-matter_ESP32_SDS011_BME280_DHT22"]
+	path = particulate-matter_ESP32_SDS011_BME280_DHT22
+	url = https://github.com/urs8000/particulate-matter_ESP32_SDS011_BME280_DHT22/
